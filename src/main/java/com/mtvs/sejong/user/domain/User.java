@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @Table(name = "tbl_user")
@@ -18,11 +16,13 @@ public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
 
-    private String loginId;
+    @Column(nullable = false, unique = true)
+    private String email;
+    @Column(nullable = false, unique = true)
     private String password;
+    @Column(nullable = false)
     private String nickname;
 
     @Enumerated(value = EnumType.STRING)
@@ -30,11 +30,11 @@ public class User extends BaseTimeEntity {
     private Authority authority;
 
     @Builder
-    public User(String loginId, String password, String nickname) {
-        this.loginId = loginId;
+    public User(String email, String password, String nickname, Authority authority) {
+        this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.authority = Authority.USER;
+        this.authority = authority;
     }
 
 }
