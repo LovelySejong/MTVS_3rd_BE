@@ -12,12 +12,12 @@ import java.util.List;
 public class RecommendRequestDTO {
 
 //    Long userId;
-    List<QuestionDTO> questionList;
+    List<QuestionDTO> problems;
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    class QuestionDTO {
+    public static class QuestionDTO {
         Long questionId;
         String questionType;
         String question;
@@ -25,6 +25,6 @@ public class RecommendRequestDTO {
         String difficultyLevel; // 문제 난이도
         Long popularityScore; // 인기도
         String questionFormat; // 문제 유형
-        String worstQuestionType; // 취약 문제
+//        String worstQuestionType; // 취약 문제
     }
 }

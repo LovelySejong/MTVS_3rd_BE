@@ -25,17 +25,17 @@ public class Question extends BaseTimeEntity {
     @Column(name = "answer")
     private String answer; // 정답
 
-    @Column(name = "difficulty_levle")
+    @Column(name = "difficulty_level")
     private String difficultyLevel; // 문제 난이도
 
     @Column(name = "popularity_score")
-    private int popularityScore; // 문제 인기도
+    private Long popularityScore; // 문제 인기도
 
     @Column(name = "question_format")
     private String questionFormat; // 문제 형식 (객관식, 주관식, 단답형, 서술형)
 
     @Builder
-    public Question(String questionType, String question, String answer, String difficultyLevel, int popularityScore, String questionFormat) {
+    public Question(String questionType, String question, String answer, String difficultyLevel, Long popularityScore, String questionFormat) {
         this.questionType = questionType;
         this.question = question;
         this.answer = answer;

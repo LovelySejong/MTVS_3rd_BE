@@ -5,6 +5,10 @@ plugins {
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10" // Querydsl 플러그인 사용 처리
 }
 
+ext {
+    springCloudVersion = "2023.0.3"
+}
+
 group = 'com.mtvs'
 version = '0.0.1-SNAPSHOT'
 
@@ -86,6 +90,9 @@ dependencies {
     //webClient
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+    // feignclient
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
 }
 
 tasks.named('bootBuildImage') {
@@ -122,6 +129,12 @@ tasks.named("compileQuerydsl").configure {
 
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+    }
 }
 
 configurations {

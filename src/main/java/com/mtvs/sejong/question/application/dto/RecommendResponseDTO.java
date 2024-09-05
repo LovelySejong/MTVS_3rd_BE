@@ -11,12 +11,12 @@ import java.util.List;
 @AllArgsConstructor
 public class RecommendResponseDTO {
 
-    List<RecommendQuestionDTO> recommendedProblems;
+    List<RecommendQuestionDTO> problems;
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    class RecommendQuestionDTO {
+    public static class RecommendQuestionDTO {
         Long questionId;
         String questionType;
         String question;
