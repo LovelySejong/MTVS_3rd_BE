@@ -34,10 +34,12 @@ public class UserController {
     public ResponseEntity<?> login(HttpServletRequest httpServletRequest, @Valid @RequestBody UserRequestDTO.loginDTO requestDTO) {
 
         UserResponseDTO.authTokenDTO responseDTO = userService.login(httpServletRequest, requestDTO);
+        UserResponseDTO.UserDTO userDTO = userService.loginInfo(requestDTO.email());
 
+        // 토큰과 사용자 정보를 포함한 응답 반환
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, responseDTO.grantType() + " " + responseDTO.accessToken())
-                .body(ApiUtils.success(null));
+                .body(ApiUtils.success(userDTO));
     }
 
 

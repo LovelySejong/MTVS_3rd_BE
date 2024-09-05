@@ -10,4 +10,11 @@ public class UserResponseDTO {
     ) {
     }
 
+    // 로그인 성공
+    public record UserDTO(
+            Long id,
+            String nickname
+    ){
+    }
+
 }

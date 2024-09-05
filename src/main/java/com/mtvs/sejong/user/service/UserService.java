@@ -2,6 +2,7 @@ package com.mtvs.sejong.user.service;
 
 import com.mtvs.sejong._core.error.exception.Exception400;
 import com.mtvs.sejong._core.error.exception.Exception401;
+import com.mtvs.sejong._core.error.exception.Exception404;
 import com.mtvs.sejong._core.jwt.JWTTokenProvider;
 import com.mtvs.sejong.user.domain.Authority;
 import com.mtvs.sejong.user.domain.User;
@@ -47,6 +48,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    // 로그인 토큰
     public UserResponseDTO.authTokenDTO login(HttpServletRequest httpServletRequest, UserRequestDTO.loginDTO requestDTO) {
 
         // 1. 이메일 확인
@@ -58,6 +60,15 @@ public class UserService {
 
         return getAuthTokenDTO(requestDTO.email(), requestDTO.password(), httpServletRequest);
     }
+
+    // 로그인 유저 정보
+    public UserResponseDTO.UserDTO loginInfo(String email) {
+        User user = findMemberByEmail(email)
+                .orElseThrow(() -> new Exception401("사용자를 찾을 수 없습니다."));
+
+         return new UserResponseDTO.UserDTO(user.getId(), user.getNickname());
+    }
+
 
     // 비밀번호 확인
     private void checkValidPassword(String rawPassword, String encodedPassword) {
@@ -98,9 +109,8 @@ public class UserService {
         return authTokenDTO;
     }
 
-    /*
-        로그아웃
-     */
+
+    /* 로그아웃 */
     public void logout(HttpServletRequest httpServletRequest) {
 
         log.info("로그아웃 - Refresh Token 확인");

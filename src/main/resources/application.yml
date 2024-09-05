@@ -24,3 +24,6 @@ logging:
   level:
     '[com.mtvs]': debug
     '[org.hibernate.type]': trace
+
+jwt:
+  secret: ${JWT.SECRET}
