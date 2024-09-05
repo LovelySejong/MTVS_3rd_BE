@@ -83,6 +83,9 @@ dependencies {
     // mysql
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
 
+    //webClient
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
 }
 
 tasks.named('bootBuildImage') {
