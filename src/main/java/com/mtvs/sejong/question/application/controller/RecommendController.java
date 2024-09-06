@@ -1,13 +1,10 @@
 package com.mtvs.sejong.question.application.controller;
 
-import com.mtvs.sejong.question.application.dto.RecommendRequestDTO;
 import com.mtvs.sejong.question.application.dto.RecommendResponseDTO;
 import com.mtvs.sejong.question.domain.service.QuestionService;
 import com.mtvs.sejong.question.openfeign.QuestionFeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,11 +20,11 @@ public class RecommendController {
         this.questionFeignClient = questionFeignClient;
     }
 
-    @PostMapping
-    public ResponseEntity<?> recommend(@RequestBody RecommendRequestDTO.QuestionDTO questionDTO) {
-        List<RecommendResponseDTO.RecommendQuestionDTO> requestDTO = questionService.findQuestionByType(questionDTO);
-        List<RecommendResponseDTO.RecommendQuestionDTO> dto = questionFeignClient.sendQuestions(requestDTO);
+    @GetMapping
+    public ResponseEntity<?> recommend() {
+        List<RecommendResponseDTO.RecommendQuestionDTO> requestDTO = questionService.findQuestionByType(); // DB에서 조회
+        List<RecommendResponseDTO.RecommendQuestionDTO> dto = questionFeignClient.sendQuestions(requestDTO); // AI한테 결과 받아오기
 
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(dto); // 프론트로 값 넘기기
     }
 }

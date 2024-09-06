@@ -55,7 +55,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     // Redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     // (배포용) 사용할 MariaDB
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'

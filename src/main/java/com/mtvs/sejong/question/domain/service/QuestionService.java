@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,13 +23,13 @@ public class QuestionService {
     private QuestionFeignClient questionFeignClient;
 
     // questionType으로 검색
-    public List<RecommendResponseDTO.RecommendQuestionDTO> findQuestionByType(RecommendRequestDTO.QuestionDTO questionDTO) {
+    public List<RecommendResponseDTO.RecommendQuestionDTO> findQuestionByType() {
 
         // user weak question type 확인
-//        String weakQuestionType = "띄어쓰기";
+        String weakQuestionType = "띄어쓰기";
 
-        // weak_question_type으로 질문 리스트 검색
-        List<Question> questionList = questionRepository.findByQuestionType(questionDTO.getQuestionType());
+        // weak_question_type으로 질문 검색 후 리스트에 저장
+        List<Question> questionList = questionRepository.findByQuestionType(weakQuestionType);
 
         // 검색된 Question 객체들을 RecommendQuestionDTO로 변환
         List<RecommendResponseDTO.RecommendQuestionDTO> recommendQuestionDTOList = new ArrayList<>();
@@ -43,12 +44,69 @@ public class QuestionService {
                             question.getPopularityScore(),
                             question.getQuestionFormat()
                     );
+            // list로 add
             recommendQuestionDTOList.add(recommendQuestionDTO);
         }
 
-        return recommendQuestionDTOList;
         // RecommendResponseDTO 생성하여 반환
 //        return dto;
+        return recommendQuestionDTOList;
+    }
+
+//    public RecommendResponseDTO findQuestionByType(String questionType) {
+//        // 특정 문제 유형에 해당하는 문제들을 데이터베이스에서 검색
+//        List<Question> questionList = questionRepository.findByQuestionType(questionType);
+//
+//        // 검색된 Question 객체들을 RecommendResponseDTO.RecommendQuestionDTO로 변환
+//        List<RecommendResponseDTO.RecommendQuestionDTO> recommendQuestionDTOList = questionList.stream()
+//                .map(question -> new RecommendResponseDTO.RecommendQuestionDTO(
+//                        question.getQuestionId(),
+//                        question.getQuestionType(),
+//                        question.getQuestion(),
+//                        question.getAnswer(),
+//                        question.getDifficultyLevel(),
+//                        question.getPopularityScore(),
+//                        question.getQuestionFormat()
+//                ))
+//                .collect(Collectors.toList());
+//
+//        // RecommendResponseDTO를 생성하고 반환
+//        return new RecommendResponseDTO(recommendQuestionDTOList);
+//    }
+
+
+
+    // 문제 생성 테스트
+    public void registNewQuestion(RecommendRequestDTO.QuestionDTO questionDTO) {
+
+        Question newQuestion = new Question(
+                questionDTO.getQuestionType(),
+                questionDTO.getQuestion(),
+                questionDTO.getAnswer(),
+                questionDTO.getDifficultyLevel(),
+                questionDTO.getPopularityScore(),
+                questionDTO.getQuestionFormat()
+        );
+
+        questionRepository.save(newQuestion);
+    }
+
+    // 모든 문제 조회
+    public List<RecommendRequestDTO.QuestionDTO> findAllQuestions() {
+
+        return questionRepository.findAll()
+                .stream()
+                .map(question -> new RecommendRequestDTO.QuestionDTO(
+                        question.getQuestionId(),
+                        question.getQuestionType(),
+                        question.getQuestion(),
+                        question.getAnswer(),
+                        question.getDifficultyLevel(),
+                        question.getPopularityScore(),
+                        question.getQuestionFormat()
+                ))
+                .collect(Collectors.toList());
+
     }
 }
 
