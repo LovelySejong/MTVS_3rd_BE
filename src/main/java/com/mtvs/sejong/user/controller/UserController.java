@@ -33,29 +33,22 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(HttpServletRequest httpServletRequest, @Valid @RequestBody UserRequestDTO.loginDTO requestDTO) {
 
-        UserResponseDTO.authTokenDTO responseDTO = userService.login(httpServletRequest, requestDTO);
-        UserResponseDTO.UserDTO userDTO = userService.loginInfo(requestDTO.email());
+        // 로그인 성공 DTO를 서비스로부터 가져옴
+        UserResponseDTO.LoginSuccessDTO loginSuccessDTO = userService.login(httpServletRequest, requestDTO);
 
         // 토큰과 사용자 정보를 포함한 응답 반환
         return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, responseDTO.grantType() + " " + responseDTO.accessToken())
-                .body(ApiUtils.success(userDTO));
+                .body(ApiUtils.success(loginSuccessDTO));
     }
-
 
     /* 로그아웃 */
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> logout() {
 
         log.info("로그아웃 시도");
 
-        userService.logout(httpServletRequest);
+        userService.logout();
 
-        return ResponseEntity.ok().body(ApiUtils.success(null));
-    }
-
-    @GetMapping("test")
-    public ResponseEntity<?> test(HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok().body(ApiUtils.success(null));
     }
 

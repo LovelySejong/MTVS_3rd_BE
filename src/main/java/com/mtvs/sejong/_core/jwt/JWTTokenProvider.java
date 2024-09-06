@@ -37,8 +37,6 @@ public class JWTTokenProvider {
     private final Key secretKey;
     // Access token의 시간 : 15분
     private static final long ACCESS_TOKEN_LIFETIME = 15 * 60 * 1000L;
-    // Refresh token의 시간 : 3일
-    private static final long REFRESH_TOKEN_LIFETIME = 3 * 24 * 60 * 60 * 1000L;
 
     public JWTTokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -126,17 +124,8 @@ public class JWTTokenProvider {
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
-    public boolean isRefreshToken(String token) {
-        String type = (String) Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().get(CLAIM_TYPE);
-        return type.equals(TYPE_REFRESH);
-    }
 
     public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE)) {
-            return bearerToken.substring(7);
-        }
 
         return null;
     }

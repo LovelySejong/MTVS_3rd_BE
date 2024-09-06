@@ -10,11 +10,13 @@ public class UserResponseDTO {
     ) {
     }
 
-    // 로그인 성공
-    public record UserDTO(
+    // 로그인 성공 시 반환하는 DTO
+    public record LoginSuccessDTO(
+            String grantType,
+            String accessToken,
+            Long accessTokenValidTime,
             Long id,
             String nickname
-    ){
+    ) {
     }
-
 }

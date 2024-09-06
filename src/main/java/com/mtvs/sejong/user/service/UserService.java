@@ -48,8 +48,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    // 로그인 토큰
-    public UserResponseDTO.authTokenDTO login(HttpServletRequest httpServletRequest, UserRequestDTO.loginDTO requestDTO) {
+    // 로그인
+    public UserResponseDTO.LoginSuccessDTO login(HttpServletRequest httpServletRequest, UserRequestDTO.loginDTO requestDTO) {
 
         // 1. 이메일 확인
         User user = findMemberByEmail(requestDTO.email())
@@ -58,17 +58,18 @@ public class UserService {
         // 2. 비밀번호 확인
         checkValidPassword(requestDTO.password(), user.getPassword());
 
-        return getAuthTokenDTO(requestDTO.email(), requestDTO.password(), httpServletRequest);
+        // 3. 토큰 발급
+        UserResponseDTO.authTokenDTO authTokenDTO = getAuthTokenDTO(requestDTO.email(), requestDTO.password(), httpServletRequest);
+
+        // 4. 로그인 성공 DTO 반환
+        return new UserResponseDTO.LoginSuccessDTO(
+                authTokenDTO.grantType(),
+                authTokenDTO.accessToken(),
+                authTokenDTO.accessTokenValidTime(),
+                user.getId(),
+                user.getNickname()
+        );
     }
-
-    // 로그인 유저 정보
-    public UserResponseDTO.UserDTO loginInfo(String email) {
-        User user = findMemberByEmail(email)
-                .orElseThrow(() -> new Exception401("사용자를 찾을 수 없습니다."));
-
-         return new UserResponseDTO.UserDTO(user.getId(), user.getNickname());
-    }
-
 
     // 비밀번호 확인
     private void checkValidPassword(String rawPassword, String encodedPassword) {
@@ -111,15 +112,8 @@ public class UserService {
 
 
     /* 로그아웃 */
-    public void logout(HttpServletRequest httpServletRequest) {
+    public void logout() {
 
         log.info("로그아웃 - Refresh Token 확인");
-
-        String token = jwtTokenProvider.resolveToken(httpServletRequest);
-
-        if(token == null || !jwtTokenProvider.validateToken(token)) {
-            throw new Exception400("유효하지 않은 Refresh Token 입니다.");
-        }
-
     }
 }
