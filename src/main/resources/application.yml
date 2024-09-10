@@ -27,3 +27,6 @@ logging:
 
 jwt:
   secret: ${JWT.SECRET}
+
+server:
+  port: 7878

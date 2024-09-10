@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 public class SecurityConfig {
 
     private static final String[] WHITE_LIST = {
-            "/api/auth/**"
+            "/api/**"
     };
 
     @Bean
