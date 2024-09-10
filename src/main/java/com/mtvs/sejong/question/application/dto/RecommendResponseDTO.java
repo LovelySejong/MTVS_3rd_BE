@@ -1,12 +1,10 @@
 package com.mtvs.sejong.question.application.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.mtvs.sejong.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -14,30 +12,19 @@ import java.util.List;
 @AllArgsConstructor
 public class RecommendResponseDTO {
 
-    List<RecommendQuestionDTO> input;
+    private List<QuestionDTO> problems;
 
     @Getter
     @NoArgsConstructor
-    public static class RecommendQuestionDTO {
-        int question_id;
-        String question_type;
-        String question;
-        String answer;
-        String difficulty_level;
-//        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssX")
-        String created_at;
-        int popularity_score;
-        String question_format;
-
-        public RecommendQuestionDTO(int questionId, String questionType, String question, String answer, String difficultyLevel, LocalDateTime createdAt, int popularityScore, String questionFormat) {
-            this.question_id = questionId;
-            this.question_type = questionType;
-            this.question = question;
-            this.answer = answer;
-            this.difficulty_level = difficultyLevel;
-            this.created_at = String.valueOf(createdAt);
-            this.popularity_score = popularityScore;
-            this.question_format = questionFormat;
-        }
+    @AllArgsConstructor
+    public static class QuestionDTO {
+        private int question_id;
+        private String question_type;
+        private String question;
+        private String answer;
+        private String difficulty_level;
+        private String created_at; // LocalDateTime을 String으로 변환
+        private int popularity_score;
+        private String question_format;
     }
 }

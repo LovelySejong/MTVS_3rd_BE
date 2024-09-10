@@ -1,8 +1,8 @@
 package com.mtvs.sejong.question.application.controller;
 
+import com.mtvs.sejong.question.application.dto.RecommendRequestDTO;
 import com.mtvs.sejong.question.application.dto.RecommendResponseDTO;
 import com.mtvs.sejong.question.domain.service.QuestionService;
-import com.mtvs.sejong.question.openfeign.AIResponseDto;
 import com.mtvs.sejong.question.openfeign.QuestionFeignClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/recommend")
@@ -27,15 +28,24 @@ public class RecommendController {
     }
 
     @GetMapping
-    public ResponseEntity<?> recommend() {
-        List<RecommendResponseDTO.RecommendQuestionDTO> requestDTO = questionService.findQuestionByType(); // DB에서 조회
-        List<RecommendResponseDTO.RecommendQuestionDTO> dto = questionFeignClient.sendQuestions(requestDTO); // AI한테 결과 받아오기
+    public ResponseEntity<RecommendResponseDTO> recommend() {
+        List<RecommendRequestDTO.QuestionDTO> requestDTOList = questionService.getRecommendedQuestions()
+                .stream()
+                .map(dto -> new RecommendRequestDTO.QuestionDTO(
+                        dto.getQuestion_id(),
+                        dto.getQuestion_type(),
+                        dto.getQuestion(),
+                        dto.getAnswer(),
+                        dto.getDifficulty_level(),
+                        dto.getCreated_at(),
+                        dto.getPopularity_score(),
+                        dto.getQuestion_format()
+                ))
+                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(dto); // 프론트로 값 넘기기
-    }
+        RecommendRequestDTO requestDTO = new RecommendRequestDTO(requestDTOList);
+        RecommendResponseDTO responseDTO = questionFeignClient.sendQuestions(requestDTO);
 
-    @GetMapping("/test")
-    public AIResponseDto test() {
-        return questionFeignClient.test();
+        return ResponseEntity.ok(responseDTO);
     }
 }
