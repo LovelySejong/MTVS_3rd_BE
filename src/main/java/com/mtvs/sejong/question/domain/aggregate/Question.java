@@ -14,7 +14,7 @@ public class Question extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long questionId;
+    private int questionId;
 
     @Column(name = "question_type")
     private String questionType; // 문제 종류
@@ -29,13 +29,13 @@ public class Question extends BaseTimeEntity {
     private String difficultyLevel; // 문제 난이도
 
     @Column(name = "popularity_score")
-    private Long popularityScore; // 문제 인기도
+    private int popularityScore; // 문제 인기도
 
     @Column(name = "question_format")
     private String questionFormat; // 문제 형식 (객관식, 주관식, 단답형, 서술형)
 
     @Builder
-    public Question(String questionType, String question, String answer, String difficultyLevel, Long popularityScore, String questionFormat) {
+    public Question(String questionType, String question, String answer, String difficultyLevel, int popularityScore, String questionFormat) {
         this.questionType = questionType;
         this.question = question;
         this.answer = answer;

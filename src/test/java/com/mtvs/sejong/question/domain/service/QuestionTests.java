@@ -1,21 +1,16 @@
 package com.mtvs.sejong.question.domain.service;
 
 import com.mtvs.sejong.question.application.dto.RecommendRequestDTO;
-import com.mtvs.sejong.question.application.dto.RecommendResponseDTO;
 import com.mtvs.sejong.question.domain.repository.QuestionRepository;
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,26 +24,26 @@ public class QuestionTests {
     @Autowired
     private QuestionRepository questionRepository;
 
-    private static Stream<Arguments> newQuestion() {
-        return Stream.of(
-                Arguments.of(new RecommendRequestDTO.QuestionDTO(1L, "띄어쓰기", "다음 문장에서 띄어쓰기를 올바르게 고치세요. 1)서울 시립 미술관 2) 서울시립 미술관", "1", "중급", 85L, "객관식")),
-                Arguments.of(new RecommendRequestDTO.QuestionDTO(2L, "한자어", "다음 중 한자어로 된 단어를 고르세요. 1)서울 2)학생", "2", "초급", 95L, "객관식")),
-                Arguments.of(new RecommendRequestDTO.QuestionDTO(3L, "띄어쓰기", "다음 문장에서 띄어쓰기를 올바르게 고치세요. 1)서울 시립 미술관 2) 서울시립 미술관", "1", "중급", 85L, "객관식"))
-        );
-    }
-
-    @DisplayName("문제 생성 테스트")
-    @ParameterizedTest
-    @MethodSource("newQuestion")
-    @Transactional
-    void testRegistQuestion(RecommendRequestDTO.QuestionDTO questionDTO) {
-
-        Assertions.assertDoesNotThrow(
-                () -> questionService.registNewQuestion(questionDTO)
-        );
-
-        questionService.findAllQuestions().forEach(System.out::println);
-    }
+//    private static Stream<Arguments> newQuestion() {
+//        return Stream.of(
+//                Arguments.of(new RecommendRequestDTO.QuestionDTO(1L, "띄어쓰기", "다음 문장에서 띄어쓰기를 올바르게 고치세요. 1)서울 시립 미술관 2) 서울시립 미술관", "1", "중급", 85L, "객관식")),
+//                Arguments.of(new RecommendRequestDTO.QuestionDTO(2L, "한자어", "다음 중 한자어로 된 단어를 고르세요. 1)서울 2)학생", "2", "초급", 95L, "객관식")),
+//                Arguments.of(new RecommendRequestDTO.QuestionDTO(3L, "띄어쓰기", "다음 문장에서 띄어쓰기를 올바르게 고치세요. 1)서울 시립 미술관 2) 서울시립 미술관", "1", "중급", 85L, "객관식"))
+//        );
+//    }
+//
+//    @DisplayName("문제 생성 테스트")
+//    @ParameterizedTest
+//    @MethodSource("newQuestion")
+//    @Transactional
+//    void testRegistQuestion(RecommendRequestDTO.QuestionDTO questionDTO) {
+//
+//        Assertions.assertDoesNotThrow(
+//                () -> questionService.registNewQuestion(questionDTO)
+//        );
+//
+//        questionService.findAllQuestions().forEach(System.out::println);
+//    }
 
 //    @DisplayName("특정 문제 유형으로 검색")
 //    @ParameterizedTest
