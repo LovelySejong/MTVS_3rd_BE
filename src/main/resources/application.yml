@@ -1,15 +1,15 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/question
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ohgiraffers
-    password: ohgiraffers
-#  h2:
-#    console:
-#      enabled: true
-#
-#  application:
-#    name: sejong
+    url: jdbc:h2:mem:test;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+
+  application:
+    name: sejong
 
   jpa:
     show-sql: true
@@ -27,3 +27,6 @@ logging:
 
 jwt:
   secret: ${JWT.SECRET}
+
+server:
+  port: 7878
