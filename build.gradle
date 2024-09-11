@@ -5,6 +5,10 @@ plugins {
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10" // Querydsl 플러그인 사용 처리
 }
 
+ext {
+    springCloudVersion = "2023.0.3"
+}
+
 group = 'com.mtvs'
 version = '0.0.1-SNAPSHOT'
 
@@ -51,7 +55,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     // Redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     // (배포용) 사용할 MariaDB
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -82,6 +86,12 @@ dependencies {
 
     // mysql
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
+
+    //webClient
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // feignclient
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
 }
 
@@ -119,6 +129,12 @@ tasks.named("compileQuerydsl").configure {
 
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+    }
 }
 
 configurations {
