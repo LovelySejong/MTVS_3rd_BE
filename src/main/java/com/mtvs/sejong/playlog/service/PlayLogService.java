@@ -16,9 +16,7 @@ public class PlayLogService {
 
     public PlayLog savePlayLog(PlayLogRequestDTO playLogRequestDTO, Long getCurrentUserId) {
         PlayLog playLog = new PlayLog();
-        playLog.setRoomName(playLogRequestDTO.getRoomName());
-        playLog.setEntryTime(playLogRequestDTO.getEntryTime());
-        playLog.setExitTime(playLogRequestDTO.getExitTime());
+        playLog.setRoomNumber(playLogRequestDTO.getRoomNumber());
         playLog.setUserId(getCurrentUserId);
 
         return playLogRepository.save(playLog);
