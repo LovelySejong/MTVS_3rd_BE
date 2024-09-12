@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Data
 public class PlayLogRequestDTO {
 
-    private String RoomName;
-    private LocalDateTime entryTime;
-    private LocalDateTime exitTime;
+    private int RoomNumber;
+
 }
