@@ -1,4 +1,4 @@
-package com.mtvs.sejong.playtime.domain;
+package com.mtvs.sejong.playlog.domain;
 
 import com.mtvs.sejong.BaseTimeEntity;
 import jakarta.persistence.Entity;
@@ -24,11 +24,11 @@ public class PlayLog extends BaseTimeEntity {
     private LocalDateTime exitTime;
 
     @Column(name = "user_id")
-    private String userId;
+    private Long userId;
 
     public PlayLog() {}
 
-    public PlayLog(Long id, String roomName, LocalDateTime entryTime, LocalDateTime exitTime, String userId) {
+    public PlayLog(Long id, String roomName, LocalDateTime entryTime, LocalDateTime exitTime, Long userId) {
         this.id = id;
         this.roomName = roomName;
         this.entryTime = entryTime;
@@ -52,7 +52,7 @@ public class PlayLog extends BaseTimeEntity {
         return exitTime;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
@@ -68,7 +68,7 @@ public class PlayLog extends BaseTimeEntity {
         this.exitTime = exitTime;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
