@@ -5,7 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class SecurityUtils {
 
-    public static Long getCurrentMemberId() {
+    public static Long getCurrentUserId() {
 
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -17,3 +17,4 @@ public class SecurityUtils {
     }
 
 }
+
