@@ -21,6 +21,8 @@ public class PlayLogService {
         playLog.setExitTime(playLogRequestDTO.getExitTime());
         playLog.setUserId(getCurrentUserId);
 
+        System.out.println("playLog = " + playLog);
+
         return playLogRepository.save(playLog);
     }
 }

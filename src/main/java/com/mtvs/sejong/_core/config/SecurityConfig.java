@@ -2,6 +2,8 @@ package com.mtvs.sejong._core.config;
 
 import com.mtvs.sejong._core.error.exception.Exception401;
 import com.mtvs.sejong._core.error.exception.Exception403;
+import com.mtvs.sejong._core.jwt.JWTTokenFilter;
+import com.mtvs.sejong._core.jwt.JWTTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +27,8 @@ import java.util.stream.Stream;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JWTTokenProvider jwtTokenProvider;
 
     private static final String[] WHITE_LIST = {
             "/api/**"
@@ -57,7 +61,8 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> {
                     exception.authenticationEntryPoint(authenticationEntryPoint());
                     exception.accessDeniedHandler(accessDeniedHandler());
-                });
+                })
+                .addFilterBefore(new JWTTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         // Spring Security Custom Filter 적용 - Form '인증'에 대해서 적용
 
         return httpSecurity.build();
