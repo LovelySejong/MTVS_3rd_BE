@@ -2,6 +2,8 @@ package com.mtvs.sejong._core.config;
 
 import com.mtvs.sejong._core.error.exception.Exception401;
 import com.mtvs.sejong._core.error.exception.Exception403;
+import com.mtvs.sejong._core.jwt.JWTTokenFilter;
+import com.mtvs.sejong._core.jwt.JWTTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +28,8 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JWTTokenProvider jwtTokenProvider;
+
     private static final String[] WHITE_LIST = {
             "/api/**"
     };
@@ -48,16 +52,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MvcRequestMatcher.Builder mvc) throws Exception {
 
-        httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement((sessionManagement) ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests((request) -> request
+        httpSecurity.csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/h2-console/**")  // H2 콘솔에 대해 CSRF 비활성화
+                )
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authorizeHttpRequests(request -> request
                         .requestMatchers(this.createMvcRequestMatcherForWhiteList(mvc)).permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/h2-console/**").permitAll()  // H2 콘솔에 대한 접근 허용
+                        .anyRequest().authenticated()
+                )
+                .headers(headers -> headers
+                        .frameOptions().disable()  // H2 콘솔에서 프레임 사용 허용
+                )
                 .exceptionHandling(exception -> {
                     exception.authenticationEntryPoint(authenticationEntryPoint());
                     exception.accessDeniedHandler(accessDeniedHandler());
-                });
+                })
+                .addFilterBefore(new JWTTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         // Spring Security Custom Filter 적용 - Form '인증'에 대해서 적용
 
         return httpSecurity.build();
@@ -78,5 +91,4 @@ public class SecurityConfig {
             throw new Exception403("Access denied: " + accessDeniedException.getMessage());
         };
     }
-
 }

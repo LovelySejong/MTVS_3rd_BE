@@ -19,6 +19,21 @@ public class PlayLogService {
         playLog.setRoomNumber(playLogRequestDTO.getRoomNumber());
         playLog.setUserId(getCurrentUserId);
 
+        System.out.println("playLog = " + playLog);
+
         return playLogRepository.save(playLog);
+    }
+
+    public void getPlayLog(Long currentUserId) {
+        PlayLog playLog = playLogRepository.findPlayLogByRoomNumber(1);
+
+        System.out.println("playLog = " + playLog);
+        System.out.println("playLog = " + playLog.getCreatedAt());
+
+        playLogRepository.save(playLog);
+
+        PlayLog playLog1 = playLogRepository.findPlayLogByRoomNumber(1);
+
+        System.out.println("playLog = " + playLog1.getUpdatedDate());
     }
 }
