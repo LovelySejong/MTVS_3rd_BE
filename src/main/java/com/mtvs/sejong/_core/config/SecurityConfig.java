@@ -19,8 +19,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import java.util.stream.Stream;
 
 @Configuration
@@ -31,7 +29,8 @@ public class SecurityConfig {
     private final JWTTokenProvider jwtTokenProvider;
 
     private static final String[] WHITE_LIST = {
-            "/api/**"
+            "/api/**",
+            "/h2-console/**"  // h2-console 경로 추가
     };
 
     @Bean
@@ -45,24 +44,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    public MvcRequestMatcher.Builder mvcRequestMatcherBuilder(HandlerMappingIntrospector introspector) {
-        return new MvcRequestMatcher.Builder(introspector);
-    }
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MvcRequestMatcher.Builder mvc) throws Exception {
-
-        httpSecurity.csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**")  // H2 콘솔에 대해 CSRF 비활성화
-                )
-                .sessionManagement(sessionManagement ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers(this.createMvcRequestMatcherForWhiteList(mvc)).permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()  // H2 콘솔에 대한 접근 허용
-                        .anyRequest().authenticated()
-                )
+        httpSecurity.csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement((sessionManagement) ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests((request) -> request
+                        .requestMatchers(WHITE_LIST).permitAll()  // antMatchers를 사용해 화이트리스트 경로 허용
+                        .anyRequest().authenticated())
                 .headers(headers -> headers
                         .frameOptions().disable()  // H2 콘솔에서 프레임 사용 허용
                 )
@@ -74,10 +63,6 @@ public class SecurityConfig {
         // Spring Security Custom Filter 적용 - Form '인증'에 대해서 적용
 
         return httpSecurity.build();
-    }
-
-    private MvcRequestMatcher[] createMvcRequestMatcherForWhiteList(MvcRequestMatcher.Builder mvc) {
-        return Stream.of(WHITE_LIST).map(mvc::pattern).toArray(MvcRequestMatcher[]::new);
     }
 
     private AuthenticationEntryPoint authenticationEntryPoint() {
