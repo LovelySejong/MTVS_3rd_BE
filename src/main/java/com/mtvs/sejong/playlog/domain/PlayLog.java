@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-
 @Entity
 public class PlayLog extends BaseTimeEntity {
 
@@ -14,25 +12,17 @@ public class PlayLog extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "room_name", nullable = false)
-    private String roomName;
-
-    @Column(name = "entry_time", nullable = false)
-    private LocalDateTime entryTime;
-
-    @Column(name = "exit_time")
-    private LocalDateTime exitTime;
+    @Column(name = "room_number", nullable = false)
+    private int roomNumber;
 
     @Column(name = "user_id")
     private Long userId;
 
     public PlayLog() {}
 
-    public PlayLog(Long id, String roomName, LocalDateTime entryTime, LocalDateTime exitTime, Long userId) {
+    public PlayLog(Long id, int roomNumber, Long userId) {
         this.id = id;
-        this.roomName = roomName;
-        this.entryTime = entryTime;
-        this.exitTime = exitTime;
+        this.roomNumber = roomNumber;
         this.userId = userId;
     }
 
@@ -40,32 +30,16 @@ public class PlayLog extends BaseTimeEntity {
         return id;
     }
 
-    public String getRoomName() {
-        return roomName;
-    }
-
-    public LocalDateTime getEntryTime() {
-        return entryTime;
-    }
-
-    public LocalDateTime getExitTime() {
-        return exitTime;
+    public int getRoomNumber() {
+        return roomNumber;
     }
 
     public Long getUserId() {
         return userId;
     }
 
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
-    }
-
-    public void setEntryTime(LocalDateTime entryTime) {
-        this.entryTime = entryTime;
-    }
-
-    public void setExitTime(LocalDateTime exitTime) {
-        this.exitTime = exitTime;
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public void setUserId(Long userId) {
@@ -76,10 +50,8 @@ public class PlayLog extends BaseTimeEntity {
     public String toString() {
         return "PlayLog{" +
                 "id=" + id +
-                ", roomName='" + roomName + '\'' +
-                ", entryTime=" + entryTime +
-                ", exitTime=" + exitTime +
-                ", userId='" + userId + '\'' +
+                ", roomNumber='" + roomNumber + '\'' +
+                ", userId=" + userId +
                 '}';
     }
 }
