@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((request) -> request
-                        .requestMatchers(WHITE_LIST).permitAll()  // antMatchers를 사용해 화이트리스트 경로 허용
+                        .requestMatchers(WHITE_LIST).permitAll()
                         .anyRequest().authenticated())
                 .headers(headers -> headers
                         .frameOptions().disable()  // H2 콘솔에서 프레임 사용 허용
