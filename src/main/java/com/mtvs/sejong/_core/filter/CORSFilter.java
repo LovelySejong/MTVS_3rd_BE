@@ -34,6 +34,8 @@ public class CORSFilter implements Filter {
         // 클라이언트가 요청할 때 허용할 헤더 목록 설정
         response.setHeader("Access-Control-Allow-Headers",
                 "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+        // 클라이언트가 응답에서 접근할 수 있는 헤더 목록 설정
+        response.setHeader("Access-Control-Expose-Headers", "Authorization");
 
         if("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
