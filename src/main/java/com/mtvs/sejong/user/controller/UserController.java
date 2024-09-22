@@ -57,8 +57,8 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<?> getUserProfile() {
 
-        userService.getUserProfile(getCurrentUserId());
+        UserResponseDTO.UserProfileDTO responseDTO = userService.getUserProfile(getCurrentUserId());
 
-        return ResponseEntity.ok().body(ApiUtils.success(null));
+        return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
 }

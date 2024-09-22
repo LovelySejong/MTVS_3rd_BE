@@ -116,4 +116,12 @@ public class UserService {
 
         log.info("로그아웃 - Refresh Token 확인");
     }
+
+    public UserResponseDTO.UserProfileDTO getUserProfile(Long currentUserId) {
+
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new Exception401("로그인부터 해주세요"));
+
+        return new UserResponseDTO.UserProfileDTO(user.getNickname());
+    }
 }
