@@ -1,5 +1,7 @@
 package com.mtvs.sejong.question.application.controller;
 
+import com.mtvs.sejong.question.application.dto.AnswerSubmitRequestDTO;
+import com.mtvs.sejong.question.application.dto.GradingResponseDTO;
 import com.mtvs.sejong.question.application.dto.RecommendRequestDTO;
 import com.mtvs.sejong.question.application.dto.RecommendResponseDTO;
 import com.mtvs.sejong.question.domain.service.QuestionService;
@@ -7,9 +9,7 @@ import com.mtvs.sejong.question.openfeign.QuestionFeignClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,5 +47,33 @@ public class RecommendController {
         RecommendResponseDTO responseDTO = questionFeignClient.sendQuestions(requestDTO);
 
         return ResponseEntity.ok(responseDTO);
+    }
+
+    @PostMapping
+    public ResponseEntity<RecommendResponseDTO> getQuestionsFromAI(@RequestBody RecommendRequestDTO aiResponse) {
+        List<Integer> questionIds = aiResponse.getProblems().stream()
+                .map(RecommendRequestDTO.QuestionDTO::getQuestion_id)
+                .collect(Collectors.toList());
+
+        List<RecommendResponseDTO.QuestionDTO> problems = questionService.getQuestionsByIds(questionIds);
+
+        RecommendResponseDTO responseDTO = new RecommendResponseDTO(problems);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @PostMapping("/submit")
+    public ResponseEntity<GradingResponseDTO> submitAnswers(@RequestBody AnswerSubmitRequestDTO answerSubmitRequestDTO) {
+        int totalQuestions = answerSubmitRequestDTO.getAnswers().size();
+        int correctCount = (int) answerSubmitRequestDTO.getAnswers().stream()
+                .filter(answerDTO -> {
+                    String correctAnswer = questionService.getCorrectAnswerById(answerDTO.getQuestionId());
+                    return correctAnswer.equals(answerDTO.getSelectedAnswer());
+                })
+                .count();
+
+        int score = (correctCount * 10) / totalQuestions;
+
+        GradingResponseDTO gradingResponse = new GradingResponseDTO(correctCount, totalQuestions, score);
+        return ResponseEntity.ok(gradingResponse);
     }
 }
