@@ -14,5 +14,4 @@ import java.time.LocalDateTime;
 public class PlayLogRequestDTO {
 
     private int RoomNumber;
-
 }

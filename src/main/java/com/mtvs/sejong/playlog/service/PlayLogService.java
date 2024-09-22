@@ -14,14 +14,27 @@ public class PlayLogService {
         this.playLogRepository = playLogRepository;
     }
 
-    public PlayLog savePlayLog(PlayLogRequestDTO playLogRequestDTO, Long getCurrentUserId) {
+    public void savePlayLog(PlayLogRequestDTO playLogRequestDTO, Long getCurrentUserId) {
+
+        int roomNumber = playLogRequestDTO.getRoomNumber();
+
         PlayLog playLog = new PlayLog();
-        playLog.setRoomNumber(playLogRequestDTO.getRoomNumber());
+        playLog.setRoomNumber(roomNumber);
         playLog.setUserId(getCurrentUserId);
 
         System.out.println("playLog = " + playLog);
 
-        return playLogRepository.save(playLog);
+        // 이전 방 마무리
+        if(roomNumber != 1) {
+            updatePrevRoomPlayLog(roomNumber - 1);
+        }
+
+        playLogRepository.save(playLog);
+    }
+
+    private void updatePrevRoomPlayLog(int prevRoomNumber) {
+
+        PlayLog prevPlayLog = playLogRepository.findPlayLogByRoomNumber(prevRoomNumber);
     }
 
     public void getPlayLog(Long currentUserId) {

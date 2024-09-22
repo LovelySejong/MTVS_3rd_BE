@@ -1,5 +1,6 @@
 package com.mtvs.sejong.playlog.controller;
 
+import com.mtvs.sejong._core.utils.ApiUtils;
 import com.mtvs.sejong.playlog.dto.PlayLogRequestDTO;
 import com.mtvs.sejong.playlog.service.PlayLogService;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +20,12 @@ public class PlayLogController {
     @PostMapping("/clear")
     public ResponseEntity<?> savePlayLog(@RequestBody PlayLogRequestDTO playLogRequestDTO) {
         playLogService.savePlayLog(playLogRequestDTO, getCurrentUserId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(ApiUtils.success(null));
     }
 
     @GetMapping("/clear")
     public ResponseEntity<?> getPlayLog() {
         playLogService.getPlayLog(getCurrentUserId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(ApiUtils.success(null));
     }
 }
