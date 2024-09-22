@@ -12,6 +12,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.mtvs.sejong._core.utils.SecurityUtils.getCurrentUserId;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -52,4 +54,11 @@ public class UserController {
         return ResponseEntity.ok().body(ApiUtils.success(null));
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<?> getUserProfile() {
+
+        userService.getUserProfile(getCurrentUserId());
+
+        return ResponseEntity.ok().body(ApiUtils.success(null));
+    }
 }
