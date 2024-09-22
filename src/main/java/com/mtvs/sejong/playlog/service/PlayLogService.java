@@ -36,17 +36,4 @@ public class PlayLogService {
 
         PlayLog prevPlayLog = playLogRepository.findPlayLogByRoomNumber(prevRoomNumber);
     }
-
-    public void getPlayLog(Long currentUserId) {
-        PlayLog playLog = playLogRepository.findPlayLogByRoomNumber(1);
-
-        System.out.println("playLog = " + playLog);
-        System.out.println("playLog = " + playLog.getCreatedAt());
-
-        playLogRepository.save(playLog);
-
-        PlayLog playLog1 = playLogRepository.findPlayLogByRoomNumber(1);
-
-        System.out.println("playLog = " + playLog1.getUpdatedDate());
-    }
 }
