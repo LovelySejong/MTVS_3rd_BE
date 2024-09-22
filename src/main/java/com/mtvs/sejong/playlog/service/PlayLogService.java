@@ -41,4 +41,8 @@ public class PlayLogService {
             prevPlayLog.setUpdatedDate(LocalDateTime.now());
         }
     }
+
+    public void getPlayLog(Long currentUserId) {
+
+    }
 }

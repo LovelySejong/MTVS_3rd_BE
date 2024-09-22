@@ -25,4 +25,11 @@ public class PlayLogController {
         playLogService.savePlayLog(playLogRequestDTO, getCurrentUserId());
         return ResponseEntity.ok().body(ApiUtils.success(null));
     }
+
+    @GetMapping
+    public ResponseEntity<?> getPlayLog() {
+
+        playLogService.getPlayLog(getCurrentUserId());
+        return ResponseEntity.ok().body(ApiUtils.success(null));
+    }
 }
