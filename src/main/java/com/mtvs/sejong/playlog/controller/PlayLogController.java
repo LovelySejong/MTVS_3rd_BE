@@ -19,6 +19,9 @@ public class PlayLogController {
 
     @PostMapping("/clear")
     public ResponseEntity<?> savePlayLog(@RequestBody PlayLogRequestDTO playLogRequestDTO) {
+
+        System.out.println("playLogRequestDTO = " + playLogRequestDTO);
+
         playLogService.savePlayLog(playLogRequestDTO, getCurrentUserId());
         return ResponseEntity.ok().body(ApiUtils.success(null));
     }

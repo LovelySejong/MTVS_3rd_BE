@@ -5,6 +5,8 @@ import com.mtvs.sejong.playlog.dto.PlayLogRequestDTO;
 import com.mtvs.sejong.playlog.repository.PlayLogRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class PlayLogService {
 
@@ -18,16 +20,15 @@ public class PlayLogService {
 
         int roomNumber = playLogRequestDTO.getRoomNumber();
 
+        System.out.println("roomNumber = " + roomNumber);
+
         PlayLog playLog = new PlayLog();
         playLog.setRoomNumber(roomNumber);
         playLog.setUserId(getCurrentUserId);
 
         System.out.println("playLog = " + playLog);
 
-        // 이전 방 마무리
-        if(roomNumber != 1) {
-            updatePrevRoomPlayLog(roomNumber - 1);
-        }
+        updatePrevRoomPlayLog(roomNumber - 1);
 
         playLogRepository.save(playLog);
     }
@@ -35,5 +36,9 @@ public class PlayLogService {
     private void updatePrevRoomPlayLog(int prevRoomNumber) {
 
         PlayLog prevPlayLog = playLogRepository.findPlayLogByRoomNumber(prevRoomNumber);
+
+        if(prevPlayLog != null) {
+            prevPlayLog.setUpdatedDate(LocalDateTime.now());
+        }
     }
 }
