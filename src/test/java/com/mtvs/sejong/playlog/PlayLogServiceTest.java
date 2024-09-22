@@ -21,12 +21,11 @@ public class PlayLogServiceTest {
     @BeforeEach
     public void setUp() {
 
-        playLog1 = new PlayLogRequestDTO();
-        playLog1.setRoomNumber(1);
+        playLog1 = new PlayLogRequestDTO(1);
         System.out.println(playLog1);
 
-        playLog2 = new PlayLogRequestDTO();
-        playLog2.setRoomNumber(2);
+        playLog2 = new PlayLogRequestDTO(2);
+        System.out.println(playLog2);
     }
 
     @Test
@@ -34,7 +33,7 @@ public class PlayLogServiceTest {
         playLogService.savePlayLog(playLog1, 1L);
         playLogService.savePlayLog(playLog2, 2L);
 
-        assertEquals(1, playLog1.getRoomNumber());
-        assertEquals(2, playLog2.getRoomNumber());
+        assertEquals(1, playLog1.RoomNumber());
+        assertEquals(2, playLog2.RoomNumber());
     }
 }

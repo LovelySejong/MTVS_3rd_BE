@@ -1,11 +1,7 @@
 package com.mtvs.sejong.playlog.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 @Builder
 @AllArgsConstructor
@@ -13,6 +9,6 @@ import java.time.LocalDateTime;
 @Data
 public class PlayLogRequestDTO {
 
-    private int RoomNumber;
-
+    @JsonProperty("RoomNumber") // JSON에서 대문자를 사용하여 역직렬화 문제 해결
+    private int roomNumber;
 }
