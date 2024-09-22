@@ -5,6 +5,8 @@ import com.mtvs.sejong.playlog.dto.PlayLogRequestDTO;
 import com.mtvs.sejong.playlog.repository.PlayLogRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class PlayLogService {
 
@@ -14,26 +16,33 @@ public class PlayLogService {
         this.playLogRepository = playLogRepository;
     }
 
-    public PlayLog savePlayLog(PlayLogRequestDTO playLogRequestDTO, Long getCurrentUserId) {
+    public void savePlayLog(PlayLogRequestDTO playLogRequestDTO, Long getCurrentUserId) {
+
+        int roomNumber = playLogRequestDTO.getRoomNumber();
+
+        System.out.println("roomNumber = " + roomNumber);
+
         PlayLog playLog = new PlayLog();
-        playLog.setRoomNumber(playLogRequestDTO.getRoomNumber());
+        playLog.setRoomNumber(roomNumber);
         playLog.setUserId(getCurrentUserId);
 
         System.out.println("playLog = " + playLog);
 
-        return playLogRepository.save(playLog);
+        updatePrevRoomPlayLog(roomNumber - 1);
+
+        playLogRepository.save(playLog);
+    }
+
+    private void updatePrevRoomPlayLog(int prevRoomNumber) {
+
+        PlayLog prevPlayLog = playLogRepository.findPlayLogByRoomNumber(prevRoomNumber);
+
+        if(prevPlayLog != null) {
+            prevPlayLog.setUpdatedDate(LocalDateTime.now());
+        }
     }
 
     public void getPlayLog(Long currentUserId) {
-        PlayLog playLog = playLogRepository.findPlayLogByRoomNumber(1);
 
-        System.out.println("playLog = " + playLog);
-        System.out.println("playLog = " + playLog.getCreatedAt());
-
-        playLogRepository.save(playLog);
-
-        PlayLog playLog1 = playLogRepository.findPlayLogByRoomNumber(1);
-
-        System.out.println("playLog = " + playLog1.getUpdatedDate());
     }
 }

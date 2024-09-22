@@ -19,4 +19,10 @@ public class UserResponseDTO {
             String nickname
     ) {
     }
+
+    // getUSerProfile
+    public record UserProfileDTO(
+            String nickname
+    ) {
+    }
 }
