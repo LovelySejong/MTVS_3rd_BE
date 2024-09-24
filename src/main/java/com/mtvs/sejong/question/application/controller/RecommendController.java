@@ -1,5 +1,8 @@
 package com.mtvs.sejong.question.application.controller;
 
+import com.mtvs.sejong._core.utils.ApiUtils;
+import com.mtvs.sejong.question.application.dto.ChatRequestDTO;
+import com.mtvs.sejong.question.application.dto.ChatResponseDTO;
 import com.mtvs.sejong.question.application.dto.RecommendRequestDTO;
 import com.mtvs.sejong.question.application.dto.RecommendResponseDTO;
 import com.mtvs.sejong.question.domain.service.QuestionService;
@@ -7,9 +10,7 @@ import com.mtvs.sejong.question.openfeign.QuestionFeignClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,8 +45,18 @@ public class RecommendController {
                 .collect(Collectors.toList());
 
         RecommendRequestDTO requestDTO = new RecommendRequestDTO(requestDTOList);
+        System.out.println("requestDTO = " + requestDTO);
         RecommendResponseDTO responseDTO = questionFeignClient.sendQuestions(requestDTO);
 
         return ResponseEntity.ok(responseDTO);
+    }
+
+    @PostMapping("/chat")
+    public ResponseEntity<?> chat(@RequestBody ChatRequestDTO chatRequestDTO) {
+
+        System.out.println("chatRequestDTO = " + chatRequestDTO);
+        ChatResponseDTO responseDTO = questionFeignClient.chat(chatRequestDTO);
+        System.out.println("responseDTO = " + responseDTO);
+        return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
 }

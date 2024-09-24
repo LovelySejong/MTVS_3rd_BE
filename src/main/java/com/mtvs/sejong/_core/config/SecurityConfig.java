@@ -2,6 +2,8 @@ package com.mtvs.sejong._core.config;
 
 import com.mtvs.sejong._core.error.exception.Exception401;
 import com.mtvs.sejong._core.error.exception.Exception403;
+import com.mtvs.sejong._core.jwt.JWTTokenFilter;
+import com.mtvs.sejong._core.jwt.JWTTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +19,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import java.util.stream.Stream;
 
 @Configuration
@@ -26,8 +26,11 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JWTTokenProvider jwtTokenProvider;
+
     private static final String[] WHITE_LIST = {
-            "/api/auth/**"
+            "/api/**",
+            "/h2-console/**"  // h2-console 경로 추가
     };
 
     @Bean
@@ -41,30 +44,25 @@ public class SecurityConfig {
     }
 
     @Bean
-    public MvcRequestMatcher.Builder mvcRequestMatcherBuilder(HandlerMappingIntrospector introspector) {
-        return new MvcRequestMatcher.Builder(introspector);
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MvcRequestMatcher.Builder mvc) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((request) -> request
-                        .requestMatchers(this.createMvcRequestMatcherForWhiteList(mvc)).permitAll()
+                        .requestMatchers(WHITE_LIST).permitAll()  // antMatchers를 사용해 화이트리스트 경로 허용
                         .anyRequest().authenticated())
+                .headers(headers -> headers
+                        .frameOptions().disable()  // H2 콘솔에서 프레임 사용 허용
+                )
                 .exceptionHandling(exception -> {
                     exception.authenticationEntryPoint(authenticationEntryPoint());
                     exception.accessDeniedHandler(accessDeniedHandler());
-                });
+                })
+                .addFilterBefore(new JWTTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         // Spring Security Custom Filter 적용 - Form '인증'에 대해서 적용
 
         return httpSecurity.build();
-    }
-
-    private MvcRequestMatcher[] createMvcRequestMatcherForWhiteList(MvcRequestMatcher.Builder mvc) {
-        return Stream.of(WHITE_LIST).map(mvc::pattern).toArray(MvcRequestMatcher[]::new);
     }
 
     private AuthenticationEntryPoint authenticationEntryPoint() {
@@ -78,5 +76,4 @@ public class SecurityConfig {
             throw new Exception403("Access denied: " + accessDeniedException.getMessage());
         };
     }
-
 }
