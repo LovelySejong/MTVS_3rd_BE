@@ -3,6 +3,8 @@ package com.mtvs.sejong.question.application.controller;
 import com.mtvs.sejong._core.utils.ApiUtils;
 import com.mtvs.sejong.question.application.dto.ChatRequestDTO;
 import com.mtvs.sejong.question.application.dto.ChatResponseDTO;
+import com.mtvs.sejong.question.application.dto.AnswerSubmitRequestDTO;
+import com.mtvs.sejong.question.application.dto.GradingResponseDTO;
 import com.mtvs.sejong.question.application.dto.RecommendRequestDTO;
 import com.mtvs.sejong.question.application.dto.RecommendResponseDTO;
 import com.mtvs.sejong.question.domain.service.QuestionService;
@@ -58,5 +60,21 @@ public class RecommendController {
         ChatResponseDTO responseDTO = questionFeignClient.chat(chatRequestDTO);
         System.out.println("responseDTO = " + responseDTO);
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
+    }
+
+    @PostMapping("/submit")
+    public ResponseEntity<GradingResponseDTO> submitAnswers(@RequestBody AnswerSubmitRequestDTO answerSubmitRequestDTO) {
+        int totalQuestions = answerSubmitRequestDTO.getAnswers().size();
+        int correctCount = (int) answerSubmitRequestDTO.getAnswers().stream()
+                .filter(answerDTO -> {
+                    String correctAnswer = questionService.getCorrectAnswerById(answerDTO.getQuestionId());
+                    return correctAnswer.equals(answerDTO.getSelectedAnswer());
+                })
+                .count();
+
+        int score = (correctCount * 10) / totalQuestions;
+
+        GradingResponseDTO gradingResponse = new GradingResponseDTO(correctCount, totalQuestions, score);
+        return ResponseEntity.ok(gradingResponse);
     }
 }

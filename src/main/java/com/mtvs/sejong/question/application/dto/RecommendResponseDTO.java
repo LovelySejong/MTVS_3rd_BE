@@ -26,5 +26,9 @@ public class RecommendResponseDTO {
         private String created_at; // LocalDateTime을 String으로 변환
         private int popularity_score;
         private String question_format;
+        private String option1;
+        private String option2;
+        private String option3;
+        private String option4;
     }
 }

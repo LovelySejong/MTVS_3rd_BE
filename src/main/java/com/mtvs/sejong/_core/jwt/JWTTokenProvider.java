@@ -35,8 +35,8 @@ public class JWTTokenProvider {
 
     // jwt 토큰 암호화를 위한 키
     private final Key secretKey;
-    // Access token의 시간 : 15분
-    private static final long ACCESS_TOKEN_LIFETIME = 15 * 60 * 1000L;
+    // Access token의 시간 : 3시간
+    private static final long ACCESS_TOKEN_LIFETIME = 3 * 60 * 60 * 1000L;
 
     public JWTTokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -126,6 +126,14 @@ public class JWTTokenProvider {
 
 
     public String resolveToken(HttpServletRequest request) {
+
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+
+        System.out.println("bearerToken = " + bearerToken);
+
+        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE)) {
+            return bearerToken.substring(7);
+        }
 
         return null;
     }

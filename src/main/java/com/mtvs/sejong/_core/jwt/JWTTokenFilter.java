@@ -26,6 +26,8 @@ public class JWTTokenFilter extends GenericFilterBean {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
         String requestURI = ((HttpServletRequest) servletRequest).getRequestURI();
 
+        System.out.println("token = " + token);
+
         // 토큰 유효성 검사
         /*
             토큰 재발급 요청 시
