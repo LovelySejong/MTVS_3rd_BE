@@ -55,11 +55,7 @@ public class QuestionService {
                         question.getDifficultyLevel(),
                         question.getCreatedAt().toString(),
                         question.getPopularityScore(),
-                        question.getQuestionFormat(),
-                        question.getOption1(),
-                        question.getOption2(),
-                        question.getOption3(),
-                        question.getOption4()
+                        question.getQuestionFormat()
                 ))
                 .collect(Collectors.toList());
     }
