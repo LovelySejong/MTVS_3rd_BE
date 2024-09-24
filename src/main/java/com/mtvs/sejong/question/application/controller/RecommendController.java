@@ -1,9 +1,6 @@
 package com.mtvs.sejong.question.application.controller;
 
-import com.mtvs.sejong.question.application.dto.AnswerSubmitRequestDTO;
-import com.mtvs.sejong.question.application.dto.GradingResponseDTO;
-import com.mtvs.sejong.question.application.dto.RecommendRequestDTO;
-import com.mtvs.sejong.question.application.dto.RecommendResponseDTO;
+import com.mtvs.sejong.question.application.dto.*;
 import com.mtvs.sejong.question.domain.service.QuestionService;
 import com.mtvs.sejong.question.openfeign.QuestionFeignClient;
 import org.slf4j.Logger;
@@ -44,15 +41,11 @@ public class RecommendController {
                 .collect(Collectors.toList());
 
         RecommendRequestDTO requestDTO = new RecommendRequestDTO(requestDTOList);
-        RecommendResponseDTO responseDTO = questionFeignClient.sendQuestions(requestDTO);
+        System.out.println("requestDTO = " + requestDTO);
+        RecommendResponseDTO aiResponse = questionFeignClient.sendQuestions(requestDTO);
 
-        return ResponseEntity.ok(responseDTO);
-    }
-
-    @PostMapping
-    public ResponseEntity<RecommendResponseDTO> getQuestionsFromAI(@RequestBody RecommendRequestDTO aiResponse) {
         List<Integer> questionIds = aiResponse.getProblems().stream()
-                .map(RecommendRequestDTO.QuestionDTO::getQuestion_id)
+                .map(RecommendResponseDTO.QuestionDTO::getQuestion_id)
                 .collect(Collectors.toList());
 
         List<RecommendResponseDTO.QuestionDTO> problems = questionService.getQuestionsByIds(questionIds);

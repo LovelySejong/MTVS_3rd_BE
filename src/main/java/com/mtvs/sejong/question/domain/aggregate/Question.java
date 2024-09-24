@@ -34,16 +34,16 @@ public class Question extends BaseTimeEntity {
     @Column(name = "question_format")
     private String questionFormat; // 문제 형식 (객관식, 주관식, 단답형, 서술형)
 
-    @Column(name = "option1")
+    @Column(name = "option_1")
     private String option1; // 객관식 선택지 1
 
-    @Column(name = "option2")
+    @Column(name = "option_2")
     private String option2; // 객관식 선택지 2
 
-    @Column(name = "option3")
+    @Column(name = "option_3")
     private String option3; // 객관식 선택지 3
 
-    @Column(name = "option4")
+    @Column(name = "option_4")
     private String option4; // 객관식 선택지 4
 
     @Builder

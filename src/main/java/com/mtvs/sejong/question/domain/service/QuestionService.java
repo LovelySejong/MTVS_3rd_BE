@@ -35,7 +35,7 @@ public class QuestionService {
                         question.getQuestionType(),
                         question.getQuestion(),
                         question.getAnswer(),
-                        question.getDifficultyLevel(),
+                        question.getDifficultyLevel() + "급",
                         question.getCreatedAt().toString(), // LocalDateTime을 String으로 변환
                         question.getPopularityScore(),
                         question.getQuestionFormat()

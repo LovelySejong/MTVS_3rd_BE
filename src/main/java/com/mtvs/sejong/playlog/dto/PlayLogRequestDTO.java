@@ -9,6 +9,6 @@ import lombok.*;
 @Data
 public class PlayLogRequestDTO {
 
-    @JsonProperty("RoomNumber") // JSON에서 대문자를 사용하여 역직렬화 문제 해결
+    @JsonProperty("roomNumber") // JSON에서 대문자를 사용하여 역직렬화 문제 해결
     private int roomNumber;
 }
