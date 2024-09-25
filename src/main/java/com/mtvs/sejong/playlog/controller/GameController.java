@@ -2,6 +2,7 @@ package com.mtvs.sejong.playlog.controller;
 
 import com.mtvs.sejong._core.utils.ApiUtils;
 import com.mtvs.sejong.playlog.dto.GameRequestDTO;
+import com.mtvs.sejong.playlog.service.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

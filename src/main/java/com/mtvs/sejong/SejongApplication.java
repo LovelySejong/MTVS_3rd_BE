@@ -28,8 +28,8 @@ public class SejongApplication {
     CommandLineRunner localServerStart(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             userRepository.saveAll(Arrays.asList(
-                    newUser("USER1", "user1@test.com", "test1234", passwordEncoder),
-                    newUser("USER2", "user2@test.com", "test1234", passwordEncoder)
+//                    newUser("USER1", "user1@test.com", "test1234", passwordEncoder),
+//                    newUser("USER2", "user2@test.com", "test1234", passwordEncoder)
             ));
         };
     }
