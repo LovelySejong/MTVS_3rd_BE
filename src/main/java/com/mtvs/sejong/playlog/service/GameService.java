@@ -17,6 +17,7 @@ public class GameService {
 
     private final GameRepository gameRepository;
 
+    @Transactional
     public GameResponseDTO.createGameDTO createGame(Long currentUserId, GameRequestDTO.createGameDTO requestDTO) {
 
         // Game 생성

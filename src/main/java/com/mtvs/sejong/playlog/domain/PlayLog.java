@@ -15,7 +15,7 @@ public class PlayLog extends BaseTimeEntity {
     @Column(name = "room_number", nullable = false)
     private int roomNumber;
 
-    @Column(name = "user_id")
+    @Column(name = "game_id")
     private Long gameId;
 
     public PlayLog() {}
