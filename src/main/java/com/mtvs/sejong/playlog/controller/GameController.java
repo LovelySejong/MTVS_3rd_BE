@@ -2,6 +2,7 @@ package com.mtvs.sejong.playlog.controller;
 
 import com.mtvs.sejong._core.utils.ApiUtils;
 import com.mtvs.sejong.playlog.dto.GameRequestDTO;
+import com.mtvs.sejong.playlog.dto.GameResponseDTO;
 import com.mtvs.sejong.playlog.service.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,8 @@ public class GameController {
     @PostMapping
     public ResponseEntity<?> enterGame(@RequestBody GameRequestDTO.createGameDTO requestDTO) {
 
-        gameService.createGame(requestDTO);
+        GameResponseDTO.createGameDTO responseDTO = gameService.createGame(requestDTO);
 
-        return ResponseEntity.ok().body(ApiUtils.success(null));
+        return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
 }
