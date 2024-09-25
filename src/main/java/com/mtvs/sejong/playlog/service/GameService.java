@@ -1,5 +1,6 @@
 package com.mtvs.sejong.playlog.service;
 
+import com.mtvs.sejong.playlog.domain.Game;
 import com.mtvs.sejong.playlog.dto.GameRequestDTO;
 import com.mtvs.sejong.playlog.dto.GameResponseDTO;
 import com.mtvs.sejong.playlog.repository.GameRepository;
@@ -19,9 +20,13 @@ public class GameService {
     public GameResponseDTO.createGameDTO createGame(Long currentUserId, GameRequestDTO.createGameDTO requestDTO) {
 
         // Game 생성
+        Game newGame = Game.builder()
+                .userId(currentUserId)
+                .partnerId(requestDTO.partnerId())
+                .build();
 
-        // GameId 조회
+        Game savedGame = gameRepository.save(newGame);
 
-        return null;
+        return new GameResponseDTO.createGameDTO(savedGame.getId());
     }
 }
