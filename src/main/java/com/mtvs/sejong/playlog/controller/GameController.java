@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.mtvs.sejong._core.utils.SecurityUtils.getCurrentUserId;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -23,7 +25,7 @@ public class GameController {
     @PostMapping
     public ResponseEntity<?> enterGame(@RequestBody GameRequestDTO.createGameDTO requestDTO) {
 
-        GameResponseDTO.createGameDTO responseDTO = gameService.createGame(requestDTO);
+        GameResponseDTO.createGameDTO responseDTO = gameService.createGame(getCurrentUserId(), requestDTO);
 
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
