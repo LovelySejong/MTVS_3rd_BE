@@ -1,5 +1,8 @@
 package com.mtvs.sejong.question.application.controller;
 
+import com.mtvs.sejong._core.utils.ApiUtils;
+import com.mtvs.sejong.question.application.dto.ChatRequestDTO;
+import com.mtvs.sejong.question.application.dto.ChatResponseDTO;
 import com.mtvs.sejong.question.application.dto.AnswerSubmitRequestDTO;
 import com.mtvs.sejong.question.application.dto.GradingResponseDTO;
 import com.mtvs.sejong.question.application.dto.RecommendRequestDTO;
@@ -44,21 +47,19 @@ public class RecommendController {
                 .collect(Collectors.toList());
 
         RecommendRequestDTO requestDTO = new RecommendRequestDTO(requestDTOList);
+        System.out.println("requestDTO = " + requestDTO);
         RecommendResponseDTO responseDTO = questionFeignClient.sendQuestions(requestDTO);
 
         return ResponseEntity.ok(responseDTO);
     }
 
-    @PostMapping
-    public ResponseEntity<RecommendResponseDTO> getQuestionsFromAI(@RequestBody RecommendRequestDTO aiResponse) {
-        List<Integer> questionIds = aiResponse.getProblems().stream()
-                .map(RecommendRequestDTO.QuestionDTO::getQuestion_id)
-                .collect(Collectors.toList());
+    @PostMapping("/chat")
+    public ResponseEntity<?> chat(@RequestBody ChatRequestDTO chatRequestDTO) {
 
-        List<RecommendResponseDTO.QuestionDTO> problems = questionService.getQuestionsByIds(questionIds);
-
-        RecommendResponseDTO responseDTO = new RecommendResponseDTO(problems);
-        return ResponseEntity.ok(responseDTO);
+        System.out.println("chatRequestDTO = " + chatRequestDTO);
+        ChatResponseDTO responseDTO = questionFeignClient.chat(chatRequestDTO);
+        System.out.println("responseDTO = " + responseDTO);
+        return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
 
     @PostMapping("/submit")

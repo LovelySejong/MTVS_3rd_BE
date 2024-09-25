@@ -1,15 +1,13 @@
 package com.mtvs.sejong.question.application.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Builder;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class RecommendRequestDTO {
 
     private List<QuestionDTO> problems;
@@ -17,6 +15,7 @@ public class RecommendRequestDTO {
     @Getter
     @NoArgsConstructor
 //    @AllArgsConstructor
+    @ToString
     public static class QuestionDTO {
         private int question_id;
         private String question_type;
