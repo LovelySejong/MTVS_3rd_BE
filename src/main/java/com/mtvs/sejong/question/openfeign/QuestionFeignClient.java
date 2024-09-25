@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "question-service", url = "http://metaai.iptime.org:7880")
+@FeignClient(name = "question-service", url = "http://metaai2.iptime.org:7880")
 public interface QuestionFeignClient {
 
     @PostMapping("/recommend")
