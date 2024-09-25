@@ -43,27 +43,6 @@ public class QuestionService {
                 .collect(Collectors.toList());
     }
 
-    public List<RecommendResponseDTO.QuestionDTO> getQuestionsByIds(List<Integer> questionIds) {
-        List<Question> questionList = questionRepository.findAllById(questionIds);
-
-        return questionList.stream()
-                .map(question -> new RecommendResponseDTO.QuestionDTO(
-                        question.getQuestionId(),
-                        question.getQuestionType(),
-                        question.getQuestion(),
-                        question.getAnswer(),
-                        question.getDifficultyLevel(),
-                        question.getCreatedAt().toString(),
-                        question.getPopularityScore(),
-                        question.getQuestionFormat(),
-                        question.getOption1(),
-                        question.getOption2(),
-                        question.getOption3(),
-                        question.getOption4()
-                ))
-                .collect(Collectors.toList());
-    }
-
     public String getCorrectAnswerById(int questionId){
         Optional<Question> question = questionRepository.findById(questionId);
         return question.map(Question::getAnswer).orElse(null);
