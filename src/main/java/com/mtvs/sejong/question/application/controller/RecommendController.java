@@ -8,6 +8,7 @@ import com.mtvs.sejong.question.application.dto.GradingResponseDTO;
 import com.mtvs.sejong.question.application.dto.RecommendRequestDTO;
 import com.mtvs.sejong.question.application.dto.RecommendResponseDTO;
 import com.mtvs.sejong.question.domain.service.QuestionService;
+import com.mtvs.sejong.question.domain.service.QuizScoreService;
 import com.mtvs.sejong.question.openfeign.QuestionFeignClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,16 +18,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.mtvs.sejong._core.utils.SecurityUtils.getCurrentUserId;
+
 @RestController
 @RequestMapping("/api/recommend")
 public class RecommendController {
 
     private static final Logger log = LoggerFactory.getLogger(RecommendController.class);
     private final QuestionService questionService;
+    private final QuizScoreService quizScoreService;
     private final QuestionFeignClient questionFeignClient;
 
-    public RecommendController(QuestionService questionService, QuestionFeignClient questionFeignClient) {
+    public RecommendController(QuestionService questionService, QuizScoreService quizScoreService, QuestionFeignClient questionFeignClient) {
         this.questionService = questionService;
+        this.quizScoreService = quizScoreService;
         this.questionFeignClient = questionFeignClient;
     }
 
@@ -72,9 +77,14 @@ public class RecommendController {
                 })
                 .count();
 
-        int score = (correctCount * 10) / totalQuestions;
+        int score = correctCount * 20;
 
         GradingResponseDTO gradingResponse = new GradingResponseDTO(correctCount, totalQuestions, score);
+
+        String questionType = questionService.getQuestionTypeById(answerSubmitRequestDTO.getAnswers().get(0).getQuestionId());
+        Long userId = getCurrentUserId();
+        quizScoreService.saveQuizScore(userId, questionType, score);
+
         return ResponseEntity.ok(gradingResponse);
     }
 }

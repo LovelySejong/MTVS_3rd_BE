@@ -9,6 +9,8 @@ public class AnswerSubmitRequestDTO {
         this.answers = answers;
     }
 
+    public AnswerSubmitRequestDTO() {}
+
     public List<AnswerDTO> getAnswers() {
         return answers;
     }
