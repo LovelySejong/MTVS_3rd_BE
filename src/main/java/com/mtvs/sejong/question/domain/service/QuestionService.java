@@ -47,4 +47,10 @@ public class QuestionService {
         Optional<Question> question = questionRepository.findById(questionId);
         return question.map(Question::getAnswer).orElse(null);
     }
+
+
+    public String getQuestionTypeById(int questionId){
+        String questionType = questionRepository.findById(questionId).map(Question::getQuestionType).orElse(null);
+        return questionType;
+    }
 }
