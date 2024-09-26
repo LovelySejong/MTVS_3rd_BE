@@ -1,10 +1,13 @@
 package com.mtvs.sejong.playlog.controller;
 
 import com.mtvs.sejong._core.utils.ApiUtils;
+import com.mtvs.sejong.playlog.dto.GameResponseDTO;
 import com.mtvs.sejong.playlog.dto.PlayLogRequestDTO;
 import com.mtvs.sejong.playlog.service.PlayLogService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.mtvs.sejong._core.utils.SecurityUtils.getCurrentUserId;
 
@@ -29,7 +32,8 @@ public class PlayLogController {
     @GetMapping
     public ResponseEntity<?> getPlayLog() {
 
-        playLogService.getPlayLog(getCurrentUserId());
-        return ResponseEntity.ok().body(ApiUtils.success(null));
+        List<GameResponseDTO.GameLogDTO> gameLogs = playLogService.getPlayLog(getCurrentUserId());
+
+        return ResponseEntity.ok().body(ApiUtils.success(gameLogs));
     }
 }
