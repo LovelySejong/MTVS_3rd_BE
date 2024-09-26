@@ -1,12 +1,7 @@
 package com.mtvs.sejong.question.application.controller;
 
 import com.mtvs.sejong._core.utils.ApiUtils;
-import com.mtvs.sejong.question.application.dto.ChatRequestDTO;
-import com.mtvs.sejong.question.application.dto.ChatResponseDTO;
-import com.mtvs.sejong.question.application.dto.AnswerSubmitRequestDTO;
-import com.mtvs.sejong.question.application.dto.GradingResponseDTO;
-import com.mtvs.sejong.question.application.dto.RecommendRequestDTO;
-import com.mtvs.sejong.question.application.dto.RecommendResponseDTO;
+import com.mtvs.sejong.question.application.dto.*;
 import com.mtvs.sejong.question.domain.service.QuestionService;
 import com.mtvs.sejong.question.domain.service.QuizScoreService;
 import com.mtvs.sejong.question.openfeign.QuestionFeignClient;
@@ -86,5 +81,12 @@ public class RecommendController {
         quizScoreService.saveQuizScore(userId, questionType, score);
 
         return ResponseEntity.ok(gradingResponse);
+    }
+
+    @GetMapping("/avgscores")
+    public ResponseEntity<List<QuizScoreDTO>> getUserAverageScores(){
+        Long userId = getCurrentUserId();
+        List<QuizScoreDTO> averageScores = quizScoreService.getUserAverageScores(userId);
+        return ResponseEntity.ok(averageScores);
     }
 }
