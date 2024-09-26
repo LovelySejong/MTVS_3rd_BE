@@ -15,15 +15,15 @@ public class PlayLog extends BaseTimeEntity {
     @Column(name = "room_number", nullable = false)
     private int roomNumber;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "game_id")
+    private Long gameId;
 
     public PlayLog() {}
 
-    public PlayLog(Long id, int roomNumber, Long userId) {
+    public PlayLog(Long id, int roomNumber, Long gameId) {
         this.id = id;
         this.roomNumber = roomNumber;
-        this.userId = userId;
+        this.gameId = gameId;
     }
 
     public Long getId() {
@@ -34,16 +34,16 @@ public class PlayLog extends BaseTimeEntity {
         return roomNumber;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getGameId() {
+        return gameId;
     }
 
     public void setRoomNumber(int roomNumber) {
         this.roomNumber = roomNumber;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class PlayLog extends BaseTimeEntity {
         return "PlayLog{" +
                 "id=" + id +
                 ", roomNumber='" + roomNumber + '\'' +
-                ", userId=" + userId +
+                ", gameId=" + gameId +
                 '}';
     }
 }
