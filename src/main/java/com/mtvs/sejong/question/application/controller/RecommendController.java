@@ -72,7 +72,7 @@ public class RecommendController {
                 })
                 .count();
 
-        int score = correctCount * 20;
+        int score = correctCount * 33;
 
         GradingResponseDTO gradingResponse = new GradingResponseDTO(correctCount, totalQuestions, score);
 
@@ -81,12 +81,5 @@ public class RecommendController {
         quizScoreService.saveQuizScore(userId, questionType, score);
 
         return ResponseEntity.ok(gradingResponse);
-    }
-
-    @GetMapping("/avgscores")
-    public ResponseEntity<List<QuizScoreDTO>> getUserAverageScores(){
-        Long userId = getCurrentUserId();
-        List<QuizScoreDTO> averageScores = quizScoreService.getUserAverageScores(userId);
-        return ResponseEntity.ok(averageScores);
     }
 }
