@@ -74,12 +74,13 @@ public class PlayLogService {
                 LocalDateTime updatedAt = playLog.getUpdatedDate();
                 Duration duration = Duration.between(createdAt, updatedAt);
 
+                // Duration 값을 읽기 쉬운 형식으로 변환
+                String formattedDuration = formatDuration(duration);
+
                 // DTO 생성
                 return PlayLogResponseDTO.PlayLogDTO.builder()
                         .roomNumber(playLog.getRoomNumber())
-                        .startedAt(createdAt)
-                        .endedAt(updatedAt)
-                        .duration(duration)
+                        .duration(formattedDuration)
                         .build();
             }).collect(Collectors.toList());
 
@@ -90,6 +91,21 @@ public class PlayLogService {
                     .playLogs(playLogDTOs)
                     .build();
         }).collect(Collectors.toList()); // 최종 DTO 리스트 반환
+    }
 
+    // Duration 형식 변환 메서드
+    private String formatDuration(Duration duration) {
+        long seconds = duration.getSeconds();
+        long hours = seconds / 3600;
+        long minutes = (seconds % 3600) / 60;
+        long remainingSeconds = seconds % 60;
+
+        if (hours > 0) {
+            return String.format("%d시간 %d분 %d초", hours, minutes, remainingSeconds);
+        } else if (minutes > 0) {
+            return String.format("%d분 %d초", minutes, remainingSeconds);
+        } else {
+            return String.format("%d초", remainingSeconds);
+        }
     }
 }

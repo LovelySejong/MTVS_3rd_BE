@@ -12,9 +12,7 @@ public class PlayLogResponseDTO {
     @Builder
     public static class PlayLogDTO {
         private int roomNumber;
-        private LocalDateTime startedAt; // created_at
-        private LocalDateTime endedAt; // updated_date
-        private Duration duration;  // 소요 시간
+        private String duration;  // 포맷된 소요 시간 (예: "4초", "3분 20초")
     }
 
 }
