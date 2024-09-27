@@ -23,7 +23,7 @@ public class QuestionService {
     public List<RecommendRequestDTO.QuestionDTO> getRecommendedQuestions() {
 
         // user weak question type 확인
-        String weakQuestionType = "문해력";
+        String weakQuestionType = "띄어쓰기";
 
         // weak_question_type으로 질문 검색
         List<Question> questionList = questionRepository.findByQuestionType(weakQuestionType);

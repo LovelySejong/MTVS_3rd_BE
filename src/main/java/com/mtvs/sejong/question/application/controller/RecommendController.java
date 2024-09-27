@@ -72,7 +72,7 @@ public class RecommendController {
                 })
                 .count();
 
-        int score = correctCount * 33;
+        int score = correctCount * 20;
 
         GradingResponseDTO gradingResponse = new GradingResponseDTO(correctCount, totalQuestions, score);
 
