@@ -1,6 +1,7 @@
 package com.mtvs.sejong.playlog.controller;
 
 import com.mtvs.sejong._core.utils.ApiUtils;
+import com.mtvs.sejong.playlog.dto.GameResponseDTO;
 import com.mtvs.sejong.playlog.dto.PlayLogRequestDTO;
 import com.mtvs.sejong.playlog.dto.PlayLogScoreDTO;
 import com.mtvs.sejong.playlog.service.PlayLogService;
@@ -31,8 +32,10 @@ public class PlayLogController {
 
     @GetMapping
     public ResponseEntity<?> getPlayLog() {
-        playLogService.getPlayLog(getCurrentUserId());
-        return ResponseEntity.ok().body(ApiUtils.success(null));
+
+        List<GameResponseDTO.GameLogDTO> gameLogs = playLogService.getPlayLog(getCurrentUserId());
+
+        return ResponseEntity.ok().body(ApiUtils.success(gameLogs));
     }
 
     @GetMapping("/avgscores")
