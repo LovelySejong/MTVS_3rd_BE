@@ -1,5 +1,6 @@
 package com.mtvs.sejong._core.jwt;
 
+import com.mtvs.sejong._core.error.exception.Exception403;
 import com.mtvs.sejong.user.dto.UserResponseDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -81,6 +82,7 @@ public class JWTTokenProvider {
             return true;
         } catch (SecurityException | MalformedJwtException | SignatureException e) {
             log.info("올바르지 않은 서명의 JWT Token 입니다.", e);
+            throw new Exception403("올바르지 않은 서명의 JWT Token 입니다.");
         } catch (ExpiredJwtException e) {
             log.info("만료된 JWT Token 입니다.", e);
         } catch (UnsupportedJwtException e) {

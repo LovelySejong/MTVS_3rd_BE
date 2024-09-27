@@ -27,6 +27,8 @@ public class GameController {
 
         GameResponseDTO.createGameDTO responseDTO = gameService.createGame(getCurrentUserId(), requestDTO);
 
+        System.out.println("responseDTO = " + responseDTO);
+
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
 }

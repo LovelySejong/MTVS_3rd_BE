@@ -37,6 +37,7 @@ public class PlayLogService {
         long gameId = playLogRequestDTO.getGameId();
 
         System.out.println("roomNumber = " + roomNumber);
+        System.out.println("gameId = " + gameId);
 
         PlayLog playLog = new PlayLog();
         playLog.setRoomNumber(roomNumber);

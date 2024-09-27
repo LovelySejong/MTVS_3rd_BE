@@ -2,15 +2,13 @@ package com.mtvs.sejong.playlog.domain;
 
 import com.mtvs.sejong.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
 @Table(name = "tbl_game")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Game extends BaseTimeEntity {
 
     @Id
