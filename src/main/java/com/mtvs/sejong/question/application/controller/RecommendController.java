@@ -82,11 +82,4 @@ public class RecommendController {
 
         return ResponseEntity.ok(gradingResponse);
     }
-
-    @GetMapping("/avgscores")
-    public ResponseEntity<List<QuizScoreDTO>> getUserAverageScores(){
-        Long userId = getCurrentUserId();
-        List<QuizScoreDTO> averageScores = quizScoreService.getUserAverageScores(userId);
-        return ResponseEntity.ok(averageScores);
-    }
 }

@@ -5,7 +5,6 @@ import com.mtvs.sejong.question.domain.aggregate.QuizScore;
 import com.mtvs.sejong.question.domain.repository.QuizScoreRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
