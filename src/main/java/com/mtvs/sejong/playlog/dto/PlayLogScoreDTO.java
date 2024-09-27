@@ -27,4 +27,12 @@ public class PlayLogScoreDTO {
     public void setAverageScore(double averageScore) {
         this.averageScore = averageScore;
     }
+
+    @Override
+    public String toString() {
+        return "PlayLogScoreDTO{" +
+                "roomNumber=" + roomNumber +
+                ", averageScore=" + averageScore +
+                '}';
+    }
 }

@@ -21,5 +21,5 @@ public interface PlayLogRepository extends JpaRepository <PlayLog, Long> {
 
     @Query(value = "SELECT p.room_number AS roomNumber, AVG(TIMESTAMPDIFF(SECOND, p.created_at, p.updated_date)) AS averageTime " +
             "FROM play_log p WHERE p.user_id = :userId GROUP BY p.room_number", nativeQuery = true)
-    List<PlayLogScoreDTO> findUserAveragePlayLog(@Param("userId") Long userId);
+    List<Object[]> findUserAveragePlayLog(@Param("userId") Long userId);
 }

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -110,7 +111,21 @@ public class PlayLogService {
         }
     }
 
+    // 평균 탈출 시간을 계산하는 로직
     public List<PlayLogScoreDTO> getUserAverageScores(Long userId) {
-        return playLogRepository.findUserAveragePlayLog(userId);
+        List<Game> games = gameRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
+
+        // 방 번호 별 평균 시간 계산
+        Map<Integer, Double> averageTimesByRoom = games.stream()
+                .flatMap(game -> playLogRepository.findByGameId(game.getId()).stream())
+                .collect(Collectors.groupingBy(
+                        PlayLog::getRoomNumber,
+                        Collectors.averagingDouble(log -> Duration.between(log.getCreatedAt(), log.getUpdatedDate()).getSeconds())
+                ));
+
+        // Map을 DTO로 변환
+        return averageTimesByRoom.entrySet().stream()
+                .map(entry -> new PlayLogScoreDTO(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
     }
 }
